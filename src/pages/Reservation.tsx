@@ -81,7 +81,7 @@ export default function Reservation() {
                 </div>
                 <div>
                   <div className="text-sm text-white/50 mb-1">Email</div>
-                  <div className="font-medium">contact@emab-madagascar.com</div>
+                  <div className="font-medium">razafindranaivoarifidy4@gmail.com</div>
                 </div>
               </div>
               <div className="flex items-center gap-4 group">

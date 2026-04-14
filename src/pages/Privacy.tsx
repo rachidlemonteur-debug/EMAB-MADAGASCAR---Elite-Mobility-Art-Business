@@ -47,7 +47,7 @@ export default function Privacy() {
           <section>
             <h2 className="text-xl font-serif text-white mb-4">4. Vos droits</h2>
             <p>
-              Vous disposez d'un droit d'accès, de rectification et de suppression de vos données personnelles. Pour exercer ce droit, vous pouvez nous contacter à l'adresse email suivante : contact@emab-madagascar.com.
+              Vous disposez d'un droit d'accès, de rectification et de suppression de vos données personnelles. Pour exercer ce droit, vous pouvez nous contacter à l'adresse email suivante : razafindranaivoarifidy4@gmail.com.
             </p>
           </section>
         </motion.div>

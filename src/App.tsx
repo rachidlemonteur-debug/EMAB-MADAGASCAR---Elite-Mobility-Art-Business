@@ -1,4 +1,4 @@
-import { motion, useScroll, useTransform, AnimatePresence, useMotionValue, useSpring } from 'motion/react';
+import { motion, useScroll, useTransform, AnimatePresence, useMotionValue, useSpring, animate, useInView } from 'motion/react';
 import { ReactLenis } from 'lenis/react';
 import { Star, Clock, Shield, MapPin, Phone, ChevronRight, MessageCircle, Car, Plane, ChevronDown, Mail, User, Menu, X, ArrowUp } from 'lucide-react';
 import React, { useRef, useState, useEffect } from 'react';
@@ -317,6 +317,28 @@ function Hero() {
   );
 }
 
+function Counter({ from, to, duration = 2 }: { from: number, to: number, duration?: number }) {
+  const nodeRef = useRef<HTMLSpanElement>(null);
+  const isInView = useInView(nodeRef, { once: true, margin: "-10%" });
+
+  useEffect(() => {
+    const node = nodeRef.current;
+    if (!node || !isInView) return;
+
+    const controls = animate(from, to, {
+      duration,
+      onUpdate(value) {
+        node.textContent = Math.round(value).toString();
+      },
+      ease: "easeOut",
+    });
+
+    return () => controls.stop();
+  }, [from, to, duration, isInView]);
+
+  return <span ref={nodeRef} />;
+}
+
 function Stats() {
   return (
     <section className="py-12 border-y border-white/5 bg-white/[0.02] relative z-20">
@@ -325,7 +347,7 @@ function Stats() {
           {[
             { value: "5/5", label: "Excellence", icon: <Star className="fill-gold text-gold" size={24} /> },
             { value: "24/7", label: "Disponibilité" },
-            { value: "8", label: "Avis Google" }
+            { value: <><Counter from={0} to={8} />+</>, label: "Avis Google" }
           ].map((stat, idx) => (
             <motion.div 
               key={idx}
@@ -488,6 +510,7 @@ function WhyUs() {
               style={{ y, scale: 1.1 }}
               whileHover={{ scale: 1.15 }}
               transition={{ duration: 0.8 }}
+              loading="lazy"
               src="https://images.unsplash.com/photo-1601362840469-51e4d8d58785?q=80&w=2070&auto=format&fit=crop" 
               alt="Luxury Car Interior" 
               className="w-full h-full object-cover"
@@ -605,7 +628,7 @@ function Fleet() {
         <motion.div style={{ x }} className="flex gap-8 px-6 md:px-24 w-[300vw] items-center">
           {images.map((img, idx) => (
             <div key={idx} className="relative w-[85vw] md:w-[60vw] h-[50vh] md:h-[70vh] rounded-3xl overflow-hidden flex-shrink-0 group">
-              <img src={img.src} alt={img.alt} className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" referrerPolicy="no-referrer" />
+              <img src={img.src} alt={img.alt} loading="lazy" className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" referrerPolicy="no-referrer" />
               <div className="absolute inset-0 bg-gradient-to-t from-dark/90 via-dark/20 to-transparent flex items-end p-8 md:p-12">
                 <div>
                   <div className="text-gold font-serif text-2xl md:text-4xl mb-2">{img.title}</div>
@@ -758,7 +781,7 @@ function Contact() {
                 </div>
                 <div>
                   <div className="text-sm text-white/50 mb-1">Email</div>
-                  <div className="font-medium">contact@emab-madagascar.com</div>
+                  <div className="font-medium">razafindranaivoarifidy4@gmail.com</div>
                 </div>
               </div>
               <div className="flex items-center gap-4">
@@ -876,8 +899,12 @@ function Footer() {
         <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-white/40 font-light">
           <div>© {new Date().getFullYear()} EMAB Madagascar. Tous droits réservés.</div>
           <div className="flex gap-6">
-            <Link to="/mentions-legales" className="hover:text-gold transition-colors">Mentions Légales</Link>
-            <Link to="/politique-confidentialite" className="hover:text-gold transition-colors">Politique de Confidentialité</Link>
+            <motion.div whileHover={{ y: -2 }}>
+              <Link to="/mentions-legales" className="hover:text-gold transition-colors">Mentions Légales</Link>
+            </motion.div>
+            <motion.div whileHover={{ y: -2 }}>
+              <Link to="/politique-confidentialite" className="hover:text-gold transition-colors">Politique de Confidentialité</Link>
+            </motion.div>
           </div>
         </div>
       </div>
@@ -910,7 +937,7 @@ function Marquee() {
   return (
     <div className="relative w-full overflow-hidden bg-gold py-4 flex items-center border-y border-white/10 z-20">
       <motion.div
-        className="flex whitespace-nowrap text-dark font-serif text-2xl md:text-4xl font-bold tracking-widest uppercase"
+        className="flex whitespace-nowrap text-dark font-serif text-2xl md:text-4xl font-bold tracking-widest uppercase will-change-transform"
         animate={{ x: ["0%", "-50%"] }}
         transition={{ duration: 20, ease: "linear", repeat: Infinity }}
       >
@@ -1024,7 +1051,7 @@ function CustomCursor() {
   return (
     <div className="hidden lg:block">
       <motion.div
-        className="fixed top-0 left-0 w-3 h-3 bg-gold rounded-full pointer-events-none z-[100] mix-blend-difference"
+        className="fixed top-0 left-0 w-3 h-3 bg-gold rounded-full pointer-events-none z-[100] mix-blend-difference will-change-transform"
         style={{
           x: cursorXSpring,
           y: cursorYSpring,
@@ -1037,7 +1064,7 @@ function CustomCursor() {
         transition={{ duration: 0.2 }}
       />
       <motion.div
-        className="fixed top-0 left-0 w-10 h-10 border border-gold/50 rounded-full pointer-events-none z-[99]"
+        className="fixed top-0 left-0 w-10 h-10 border border-gold/50 rounded-full pointer-events-none z-[99] will-change-transform"
         style={{
           x: cursorXSpringSlow,
           y: cursorYSpringSlow,

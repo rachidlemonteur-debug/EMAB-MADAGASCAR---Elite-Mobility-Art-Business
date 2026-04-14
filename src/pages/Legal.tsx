@@ -24,7 +24,7 @@ export default function Legal() {
               Le présent site est édité par la société <strong>Elite Mobility & Art Business (EMAB)</strong>.<br/>
               Siège social : Antananarivo, Madagascar<br/>
               Téléphone : +261 34 95 242 64<br/>
-              Email : contact@emab-madagascar.com
+              Email : razafindranaivoarifidy4@gmail.com
             </p>
           </section>
 
